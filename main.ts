@@ -45,6 +45,13 @@ input.onButtonPressed(Button.B, function () {
     Player.change(LedSpriteProperty.X, 1)
     music.playTone(880, music.beat(BeatFraction.Sixteenth))
 })
+input.onGesture(Gesture.Shake, function () {
+    music.playTone(988, music.beat(BeatFraction.Eighth))
+    droid += 1
+    if (droid > 1) {
+        droid = 0
+    }
+})
 function delEnemy (num: number) {
     if (0 == num) {
         E0.delete()
@@ -62,13 +69,6 @@ function delEnemy (num: number) {
         E4.delete()
     }
 }
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    music.playTone(988, music.beat(BeatFraction.Eighth))
-    droid += 1
-    if (droid > 1) {
-        droid = 0
-    }
-})
 function DispEnemy (num: number) {
     for (let index3 = 0; index3 <= 4; index3++) {
         if (Enemy[index3] == 1) {
