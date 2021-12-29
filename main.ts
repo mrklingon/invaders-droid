@@ -24,7 +24,7 @@ function DispBlank (num: number) {
         delEnemy(index)
     }
 }
-input.onButtonPressed(Button.AB, function () {
+function doTorp () {
     Torpedo = game.createSprite(Player.get(LedSpriteProperty.X), Player.get(LedSpriteProperty.Y))
     music.playTone(523, music.beat(BeatFraction.Sixteenth))
     music.playTone(784, music.beat(BeatFraction.Sixteenth))
@@ -37,6 +37,9 @@ input.onButtonPressed(Button.AB, function () {
     game.addScore(Enemy[Player.get(LedSpriteProperty.X)] * 50)
     delEnemy(Player.get(LedSpriteProperty.X))
     Enemy[Player.get(LedSpriteProperty.X)] = zero
+}
+input.onButtonPressed(Button.AB, function () {
+    doTorp()
 })
 input.onButtonPressed(Button.B, function () {
     Player.change(LedSpriteProperty.X, 1)
@@ -59,6 +62,13 @@ function delEnemy (num: number) {
         E4.delete()
     }
 }
+input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+    music.playTone(988, music.beat(BeatFraction.Eighth))
+    droid += 1
+    if (droid > 1) {
+        droid = 0
+    }
+})
 function DispEnemy (num: number) {
     for (let index3 = 0; index3 <= 4; index3++) {
         if (Enemy[index3] == 1) {
@@ -76,6 +86,9 @@ let E0: game.LedSprite = null
 let Player: game.LedSprite = null
 let Enemy: number[] = []
 let zero = 0
+let droid = 0
+droid = 0
+let battle = 0
 zero = 0
 game.setLife(10)
 images.createBigImage(`
@@ -119,6 +132,7 @@ basic.forever(function () {
     Pause = 3000
     while (true) {
         music.playTone(131, music.beat(BeatFraction.Quarter))
+        battle = 1
         for (let index4 = 0; index4 <= 4; index4++) {
             DispEnemy(index4)
             basic.pause(Pause)
@@ -135,5 +149,16 @@ basic.forever(function () {
         1
         ]
         Pause = Pause * 0.75
+        battle = 0
+    }
+})
+basic.forever(function () {
+    if (droid == 1 && battle == 1) {
+        for (let index = 0; index <= 4; index++) {
+            Player.set(LedSpriteProperty.X, index)
+            doTorp()
+            basic.pause(100)
+        }
+        battle = 0
     }
 })
